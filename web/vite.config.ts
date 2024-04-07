@@ -1,11 +1,16 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
+import svgLoader from 'vite-svg-loader';
+
 
 // https://vitejs.dev/config/
 export default defineConfig({
   root: 'web',
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    svgLoader({ svgoConfig: {} }),
+  ],
   build: {
     outDir: path.resolve(__dirname, '../build'),
   },
@@ -20,7 +25,8 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       less: {
-        math: 'always'
+        math: 'always',
+        javascriptEnabled: true,
       },
     }
   }

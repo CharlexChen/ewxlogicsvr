@@ -8,8 +8,8 @@ export class WorkWechatController {
   async fnTest() {
     const result = await this.workWechatService.getAccessToken();
     return {
-      ret: 0,
-      result,
+      code: 0,
+      data: result,
     };
   }
   @Get('/getCollectionInfo')
@@ -18,8 +18,8 @@ export class WorkWechatController {
       req.query.accessToken as string,
     );
     return {
-      ret: 0,
-      result,
+      code: 0,
+      data: result,
     };
   }
 }

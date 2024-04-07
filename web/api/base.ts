@@ -1,4 +1,11 @@
 import axios from 'axios';
+// import type { AxiosRequestConfig, AxiosResponse } from 'axios';
+
+export interface HttpResponse<T = unknown> {
+  msg: string;
+  code: number;
+  data: T;
+}
 
 // 创建一个 axios 实例
 const instance = axios.create({
@@ -9,12 +16,12 @@ const instance = axios.create({
 
 // 请求拦截器
 instance.interceptors.request.use(
-  function (config) {
+  (config) => {
     // 在发送请求之前做些什么，例如添加 token 到请求头
     // config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
     return config;
   },
-  function (error) {
+  (error) => {
     // 请求错误时做些事
     return Promise.reject(error);
   },
@@ -22,7 +29,7 @@ instance.interceptors.request.use(
 
 // 响应拦截器
 instance.interceptors.response.use(
-  function (response) {
+  (response) => {
     // 对响应数据做点什么，例如处理特定的状态码
     if (response.status === 200) {
       return response.data;
@@ -32,7 +39,7 @@ instance.interceptors.response.use(
       return Promise.reject(response.statusText);
     }
   },
-  function (error) {
+  (error) => {
     // 响应错误时做些事
     if (error.response) {
       // 请求已发出，服务器响应状态码不在 2xx 范围内
