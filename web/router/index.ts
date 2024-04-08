@@ -3,16 +3,20 @@ import {
   createRouter as _createRouter,
   createWebHashHistory,
 } from 'vue-router';
-
-// Auto generates routes from vue files under ./pages
+import { appRoutes } from './routes';
+import { REDIRECT_MAIN, NOT_FOUND_ROUTE } from './routes/base';
+// Auto generates routes from vue files under ../views
 // https://vitejs.dev/guide/features.html#glob-import
-// const pages = import.meta.glob('./pages/*.vue')
+// const views = import.meta.glob('../views/*.vue')
 
 const routes = [
   {
     path: '/home',
-    component: () => import('./pages/home.vue'),
+    component: () => import('../views/home.vue'),
   },
+  ...appRoutes,
+  REDIRECT_MAIN,
+  NOT_FOUND_ROUTE,
 ];
 
 export function createRouter() {
@@ -21,5 +25,8 @@ export function createRouter() {
     // import.meta.env.SSR is injected by Vite.
     history: createWebHashHistory('/'),
     routes,
+    scrollBehavior() {
+      return { top: 0 };
+    },
   });
 }
