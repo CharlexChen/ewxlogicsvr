@@ -30,7 +30,7 @@ const defaultOption = {
             }),
         })
     ],
-    handleExceptions: true,
+    // handleExceptions: true,
     // exceptionHandlers: [
     //     new transports.File({
     //         format: format.errors({ stack: true }),
@@ -53,22 +53,22 @@ export class XLogger implements LoggerService {
     }
     log(...message: any[]) {
         const time = dayjs(Date.now()).format('YYYY-MM-DD HH:mm:ss');
-        const textArr = message?.map(item => typeof item === 'string' ? `'${item}'` : JSON.stringify(item)) || [];
+        const textArr = message?.map(item => typeof item === 'string' ? `${item}` : JSON.stringify(item)) || [];
         this.logger.log('info', textArr.join(' '), { time });
     }
     error(...message: any[]) {
         const time = dayjs(Date.now()).format('YYYY-MM-DD HH:mm:ss');
-        const textArr = message?.map(item => typeof item === 'string' ? `'${item}'` : JSON.stringify(item)) || [];
+        const textArr = message?.map(item => typeof item === 'string' ? `${item}` : JSON.stringify(item)) || [];
         this.logger.log('error', textArr.join(' '), { time });
     }
     warn(...message: any[]) {
         const time = dayjs(Date.now()).format('YYYY-MM-DD HH:mm:ss');
-        const textArr = message?.map(item => typeof item === 'string' ? `'${item}'` : JSON.stringify(item)) || [];
+        const textArr = message?.map(item => typeof item === 'string' ? `${item}` : JSON.stringify(item)) || [];
         this.logger.log('warn', textArr.join(' '), { time });
     }
     debug?(...message: any[]) {
         const time = dayjs(Date.now()).format('YYYY-MM-DD HH:mm:ss');
-        const textArr = message?.map(item => typeof item === 'string' ? `'${item}'` : JSON.stringify(item)) || [];
+        const textArr = message?.map(item => typeof item === 'string' ? `${item}` : JSON.stringify(item)) || [];
         this.logger.log('debug', textArr.join(' '), { time });
     }
 }
