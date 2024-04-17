@@ -1,4 +1,4 @@
-import { GetAccessTokenDto, GetCollectionInfoDto } from 'api-typings/work-wechat.api';
+import { GetAccessTokenDto, GetCollectionInfoDto } from '../../api-typings/work-wechat';
 import { ValidationPipe } from '../../pipes/validation.pipe';
 import { WorkWechatService } from './work-wechat.service';
 import { Controller, Get, Inject, Query, Req } from '@nestjs/common';
