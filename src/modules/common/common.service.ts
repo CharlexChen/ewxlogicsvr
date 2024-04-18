@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { HttpService } from '@nestjs/axios';
 import { AxiosResponse, AxiosError, AxiosRequestConfig } from 'axios';
-import { Observable, catchError, map, of } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -14,7 +14,6 @@ export class CommonService {
         return response.data;
       }),
       catchError((_error: AxiosError) => {
-        // this.logger.error(error.response.data);
         return of(null);
       }),
     );
@@ -30,7 +29,6 @@ export class CommonService {
         return response.data;
       }),
       catchError((_error: AxiosError) => {
-        // this.logger.error(error.response.data);
         return of(null);
       }),
     );

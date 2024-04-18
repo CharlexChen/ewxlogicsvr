@@ -15,6 +15,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^6.0.0
   '@typescript-eslint/parser': ^6.0.0
   '@vitejs/plugin-vue': ^5.0.4
+  '@vueuse/core': ^10.9.0
   axios: ^1.6.8
   chalk: '4'
   class-transformer: ^0.5.1
@@ -51,6 +52,7 @@ dependencies:
   '@nestjs/common': registry.npmmirror.com/@nestjs/common/10.3.7_prqteaxeztlh7hcpcoxjb3p2le
   '@nestjs/core': registry.npmmirror.com/@nestjs/core/10.3.7_yus5svu3suflkec63io4ph3omu
   '@nestjs/platform-express': registry.npmmirror.com/@nestjs/platform-express/10.3.7_w6acweilb2ifjcytrys3vizh5m
+  '@vueuse/core': registry.npmmirror.com/@vueuse/core/10.9.0_vue@3.4.21
   axios: registry.npmmirror.com/axios/1.6.8
   chalk: registry.npmmirror.com/chalk/4.1.2
   class-transformer: registry.npmmirror.com/class-transformer/0.5.1
@@ -2000,6 +2002,12 @@ packages:
     name: '@types/validator'
     version: 13.11.9
 
+  registry.npmmirror.com/@types/web-bluetooth/0.0.20:
+    resolution: {integrity: sha512-g9gZnnXVq7gM7v3tJCWV/qw7w+KeOlSHAhgF9RytFyifW6AF61hdT2ucrYhPq9hLs5JIryeupHV3qGk95dH9ow==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/web-bluetooth/-/web-bluetooth-0.0.20.tgz}
+    name: '@types/web-bluetooth'
+    version: 0.0.20
+    dev: false
+
   registry.npmmirror.com/@types/yargs-parser/21.0.3:
     resolution: {integrity: sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/yargs-parser/-/yargs-parser-21.0.3.tgz}
     name: '@types/yargs-parser'
@@ -2321,6 +2329,39 @@ packages:
     resolution: {integrity: sha512-PuJe7vDIi6VYSinuEbUIQgMIRZGgM8e4R+G+/dQTk0X1NEdvgvvgv7m+rfmDH1gZzyA1OjjoWskvHlfRNfQf3g==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vue/shared/-/shared-3.4.21.tgz}
     name: '@vue/shared'
     version: 3.4.21
+
+  registry.npmmirror.com/@vueuse/core/10.9.0_vue@3.4.21:
+    resolution: {integrity: sha512-/1vjTol8SXnx6xewDEKfS0Ra//ncg4Hb0DaZiwKf7drgfMsKFExQ+FnnENcN6efPen+1kIzhLQoGSy0eDUVOMg==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vueuse/core/-/core-10.9.0.tgz}
+    id: registry.npmmirror.com/@vueuse/core/10.9.0
+    name: '@vueuse/core'
+    version: 10.9.0
+    dependencies:
+      '@types/web-bluetooth': registry.npmmirror.com/@types/web-bluetooth/0.0.20
+      '@vueuse/metadata': registry.npmmirror.com/@vueuse/metadata/10.9.0
+      '@vueuse/shared': registry.npmmirror.com/@vueuse/shared/10.9.0_vue@3.4.21
+      vue-demi: registry.npmmirror.com/vue-demi/0.14.7_vue@3.4.21
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: false
+
+  registry.npmmirror.com/@vueuse/metadata/10.9.0:
+    resolution: {integrity: sha512-iddNbg3yZM0X7qFY2sAotomgdHK7YJ6sKUvQqbvwnf7TmaVPxS4EJydcNsVejNdS8iWCtDk+fYXr7E32nyTnGA==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vueuse/metadata/-/metadata-10.9.0.tgz}
+    name: '@vueuse/metadata'
+    version: 10.9.0
+    dev: false
+
+  registry.npmmirror.com/@vueuse/shared/10.9.0_vue@3.4.21:
+    resolution: {integrity: sha512-Uud2IWncmAfJvRaFYzv5OHDli+FbOzxiVEQdLCKQKLyhz94PIyFC3CHcH7EDMwIn8NPtD06+PNbC/PiO0LGLtw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vueuse/shared/-/shared-10.9.0.tgz}
+    id: registry.npmmirror.com/@vueuse/shared/10.9.0
+    name: '@vueuse/shared'
+    version: 10.9.0
+    dependencies:
+      vue-demi: registry.npmmirror.com/vue-demi/0.14.7_vue@3.4.21
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: false
 
   registry.npmmirror.com/@webassemblyjs/ast/1.12.1:
     resolution: {integrity: sha512-EKfMUOPRRUTy5UII4qJDGPpqfwjOmZ5jeGFwid9mnoqIFK+e0vqoi1qH56JpmZSzEL53jKnNzScdmftJyG5xWg==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@webassemblyjs/ast/-/ast-1.12.1.tgz}
