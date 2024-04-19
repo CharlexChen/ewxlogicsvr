@@ -18,6 +18,7 @@ specifiers:
   '@vueuse/core': ^10.9.0
   axios: ^1.6.8
   chalk: '4'
+  chokidar: ^3.6.0
   class-transformer: ^0.5.1
   class-validator: ^0.14.1
   dayjs: ^1.11.10
@@ -79,6 +80,7 @@ devDependencies:
   '@typescript-eslint/eslint-plugin': registry.npmmirror.com/@typescript-eslint/eslint-plugin/6.21.0_e7yobnyfx4dqgihr6zekri45te
   '@typescript-eslint/parser': registry.npmmirror.com/@typescript-eslint/parser/6.21.0_etjje6qigiul5ehv6jbvvk4jai
   '@vitejs/plugin-vue': registry.npmmirror.com/@vitejs/plugin-vue/5.0.4_vite@5.2.8+vue@3.4.21
+  chokidar: registry.npmmirror.com/chokidar/3.6.0
   eslint: registry.npmmirror.com/eslint/8.57.0
   eslint-config-prettier: registry.npmmirror.com/eslint-config-prettier/9.1.0_eslint@8.57.0
   eslint-plugin-prettier: registry.npmmirror.com/eslint-plugin-prettier/5.1.3_udeglvt2rvqfn252kbszwwr7nu
