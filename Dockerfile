@@ -12,7 +12,7 @@ COPY ./build ./
 COPY .env* ./
 
 # 安装依赖
-RUN npm -v && pnpm install --production
+RUN npm install --save-dev pnpm && npx pnpm install --production
 
 # 暴露应用运行的端口
 EXPOSE 3010
