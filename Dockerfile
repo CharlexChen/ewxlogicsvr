@@ -1,5 +1,5 @@
 # 使用官方Node.js镜像作为基础镜像，用于运行应用
-FROM node:18
+FROM node:16
 
 # 设置工作目录
 WORKDIR /usr/src/app
@@ -12,7 +12,7 @@ COPY ./build ./
 COPY .env* ./
 
 # 安装依赖
-RUN npm install -g pnpm && pnpm install --production
+RUN npm -v && pnpm install --production
 
 # 暴露应用运行的端口
 EXPOSE 3010
