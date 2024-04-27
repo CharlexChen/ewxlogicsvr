@@ -11,10 +11,10 @@ COPY ./dist ./
 COPY ./build ./
 COPY .env* ./
 
-RUN node --single-threaded /usr/local/bin/npm install -g pnpm
+# RUN npm install -g pnpm
 
 # 安装依赖
-RUN pnpm install --production
+RUN corepack enable && corepack prepare pnpm@8.5.1 --activate && pnpm install --production --registry=https://registry.npm.taobao.org/
 
 # 暴露应用运行的端口
 EXPOSE 3010
