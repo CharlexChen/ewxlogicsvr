@@ -12,7 +12,7 @@ COPY ./build ./
 COPY .env* ./
 
 # 安装依赖
-RUN corepack enable && corepack prepare pnpm@8.5.1 --activate && pnpm install --production
+RUN corepack enable && pnpm install --production
 
 # 暴露应用运行的端口
 EXPOSE 3010
