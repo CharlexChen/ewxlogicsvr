@@ -1,7 +1,8 @@
 <template>
     <a-layout class="arco-layout">
         <a-layout-sider collapsible breakpoint="xl">
-            <div class="logo" />
+            <!-- <div class="logo" /> -->
+            <div class="menu-title">常用工具箱</div>
             <a-menu :default-open-keys="['1']" :default-selected-keys="['0_3']" :style="{ width: '100%' }"
                 @menu-item-click="onClickMenuItem">
                 <a-menu-item key="0_1">
@@ -51,19 +52,22 @@
             <a-layout-header style="padding-left: 20px;">
                 Header123
             </a-layout-header>
-            <a-layout style="padding: 0 24px;">
-                <a-breadcrumb :style="{ margin: '16px 0' }">
+            <a-layout style="padding: 24px 24px 0 24px;">
+                <!-- <a-breadcrumb :style="{ margin: '16px 0' }">
                     <a-breadcrumb-item>Home</a-breadcrumb-item>
                     <a-breadcrumb-item>List</a-breadcrumb-item>
                     <a-breadcrumb-item>App</a-breadcrumb-item>
-                </a-breadcrumb>
-                <a-layout-content>Content</a-layout-content>
+                </a-breadcrumb> -->
+                <a-layout-content>
+                    <PageLayout />
+                </a-layout-content>
                 <a-layout-footer>Footer</a-layout-footer>
             </a-layout>
         </a-layout>
     </a-layout>
 </template>
 <script setup lang="ts">
+import PageLayout from './page-layout.vue';
 import { Message } from '@arco-design/web-vue';
 import {
     IconCaretRight,
@@ -71,9 +75,33 @@ import {
     IconHome,
     IconCalendar,
 } from '@arco-design/web-vue/es/icon';
+import { useRoute } from 'vue-router';
+import { appRoutes } from '../router/routes';
+// import { computed } from 'vue';
+// import type { RouteMeta } from 'vue-router';
+// import { AppRouteRecordRaw } from '../router/routes/types';
+
+// interface IMenuItem {
+//     key: string;
+//     name?: string;
+//     meta?: RouteMeta;
+//     children?: AppRouteRecordRaw[];
+// }
+const route = useRoute();
+// const router = useRouter();
 function onClickMenuItem(key: string) {
+    console.log('router', appRoutes, route);
     Message.info({ content: `You select ${key}`, showIcon: true });
 }
+// const menuList = computed(() => {
+//     const arr: IMenuItem[] = [];
+//     appRoutes.forEach((ele) => {
+//         if (ele.meta?.hideInMenu) return ;
+//         arr.push({
+//             key: ele.path.indexOf('/') === 0 ? ele.path : `/${ele.path}`,
+//         });
+//     });
+// });
 </script>
 <style lang="less" scoped>
 .arco-layout {
@@ -92,6 +120,14 @@ function onClickMenuItem(key: string) {
 
 .arco-layout :deep(.arco-layout-sider-light) .logo {
     background: var(--color-fill-2);
+}
+
+.menu-title {
+    height: 32px;
+    margin: 12px 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .arco-layout :deep(.arco-layout-header) {
@@ -113,16 +149,17 @@ function onClickMenuItem(key: string) {
     font-weight: 400;
     font-size: 14px;
     background: var(--color-bg-3);
+    padding: 15px;
 }
 
 .arco-layout :deep(.arco-layout-footer),
 .arco-layout :deep(.arco-layout-content) {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    color: var(--color-white);
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center;
+    // color: var(--color-white);
     font-size: 16px;
     font-stretch: condensed;
-    text-align: center;
+    // text-align: center;
 }
 </style>

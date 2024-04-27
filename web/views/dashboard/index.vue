@@ -25,3 +25,5 @@ onMounted(() => {
     userStore.fetchInfo();
 })
 </script>
+<style lang="less">
+</style>
