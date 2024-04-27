@@ -11,7 +11,7 @@ COPY ./dist ./
 COPY ./build ./
 COPY .env* ./
 
-RUN npm install -g pnpm
+RUN node --single-threaded /usr/local/bin/npm install -g pnpm
 
 # 安装依赖
 RUN pnpm install --production
