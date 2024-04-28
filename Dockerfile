@@ -10,7 +10,7 @@ COPY pnpm-lock.yaml ./
 COPY ./dist ./dist
 COPY ./build ./build
 COPY .env* ./
-RUN pwd && ls -a
+# RUN pwd && ls -a
 # RUN npm install -g pnpm
 
 # 安装依赖
