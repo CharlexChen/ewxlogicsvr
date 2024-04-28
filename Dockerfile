@@ -7,8 +7,8 @@ WORKDIR /usr/src/app
 # 复制所需文件与目录到工作目录
 COPY package*.json ./
 COPY pnpm-lock.yaml ./
-COPY ./dist ./
-COPY ./build ./
+COPY ./dist ./dist
+COPY ./build ./build
 COPY .env* ./
 RUN pwd && ls -a
 # RUN npm install -g pnpm
