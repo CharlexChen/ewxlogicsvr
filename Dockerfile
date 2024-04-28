@@ -7,12 +7,14 @@ WORKDIR /usr/src/app
 # 复制所需文件与目录到工作目录
 COPY package*.json ./
 COPY pnpm-lock.yaml ./
-COPY ./dist ./
-COPY ./build ./
+COPY ./dist ./dist
+COPY ./build ./build
 COPY .env* ./
+# RUN pwd && ls -a
+# RUN npm install -g pnpm
 
 # 安装依赖
-RUN corepack enable && corepack prepare pnpm@8.5.1 --activate && pnpm install --production
+RUN corepack enable && corepack prepare pnpm@8.5.1 --activate && pnpm install --production --registry=http://registry.npm.taobao.org/
 
 # 暴露应用运行的端口
 EXPOSE 3010
