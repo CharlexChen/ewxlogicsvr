@@ -1,16 +1,12 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import path from 'path'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import path from 'path';
 import svgLoader from 'vite-svg-loader';
-
 
 // https://vitejs.dev/config/
 export default defineConfig({
   root: 'web',
-  plugins: [
-    vue(),
-    svgLoader({ svgoConfig: {} }),
-  ],
+  plugins: [vue(), svgLoader({ svgoConfig: {} })],
   build: {
     outDir: path.resolve(__dirname, '../build'),
   },
@@ -20,7 +16,7 @@ export default defineConfig({
       // '@': './web',
       '~': path.resolve(__dirname, '../'),
       '@': path.resolve(__dirname, './'),
-    }
+    },
   },
   css: {
     preprocessorOptions: {
@@ -28,6 +24,6 @@ export default defineConfig({
         math: 'always',
         javascriptEnabled: true,
       },
-    }
-  }
-})
+    },
+  },
+});

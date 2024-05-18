@@ -29,7 +29,7 @@ export default function useMenuTree() {
 
         // route filter hideInMenu true
         element.children = element.children.filter(
-          (x) => x.meta?.hideInMenu !== true
+          (x) => x.meta?.hideInMenu !== true,
         );
 
         // Associated child node

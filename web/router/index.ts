@@ -5,6 +5,8 @@ import {
 } from 'vue-router';
 import { appRoutes } from './routes';
 import { REDIRECT_MAIN, NOT_FOUND_ROUTE } from './routes/base';
+import { setRouteEmitter } from '@/utils/route-listener';
+
 // Auto generates routes from vue files under ../views
 // https://vitejs.dev/guide/features.html#glob-import
 // const views = import.meta.glob('../views/*.vue')
@@ -20,7 +22,7 @@ const routes = [
 ];
 
 export function createRouter() {
-  return _createRouter({
+  const router =  _createRouter({
     // use appropriate history implementation for server/client
     // import.meta.env.SSR is injected by Vite.
     history: createWebHashHistory('/'),
@@ -29,4 +31,9 @@ export function createRouter() {
       return { top: 0 };
     },
   });
+  router.beforeEach(async (to) => {
+    // emit route change
+    setRouteEmitter(to);
+  });
+  return router;
 }

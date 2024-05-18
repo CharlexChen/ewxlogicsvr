@@ -1,6 +1,6 @@
 <template>
     <div class="hello-page">
-        欢迎访问业务数据工具助手🔧
+        欢迎访问工作流🔧
     </div>
 </template>
 <script setup lang="ts">
