@@ -23,13 +23,12 @@ watcher.on('ready', () => {
 });
 
 function buildWebClient() {
-  startProcessBySpawn('pnpm', ['build:web'])
+  startProcessBySpawn('pnpm', ['build:web']);
 }
 
 function startNestServer() {
   return startProcessBySpawn('pnpm', ['start:watch']);
 }
-
 
 function startProcessBySpawn(command: string, args: any, label = '') {
   const childProcess = spawn(command, args);
