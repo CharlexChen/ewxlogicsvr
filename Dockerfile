@@ -14,7 +14,7 @@ COPY .env* ./
 # RUN npm install -g pnpm
 
 # 安装依赖
-RUN corepack enable && corepack prepare pnpm@8.5.1 --activate && pnpm install --production --registry=http://registry.npmmirror.com/
+RUN corepack enable && corepack prepare pnpm@8.5.1 --activate && pnpm install --production --registry=http://registry.npm.taobao.org/
 
 # 暴露应用运行的端口
 EXPOSE 3010
