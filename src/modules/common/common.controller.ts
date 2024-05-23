@@ -1,4 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('common')
 export class CommonController {
@@ -14,5 +15,10 @@ export class CommonController {
                 country: 'china',
             },
         }
+    }
+    @Post('/upload')
+    @UseInterceptors(FileInterceptor('file'))
+    uploadFile(@UploadedFile() file: Express.Multer.File) {
+        console.log(file);
     }
 }

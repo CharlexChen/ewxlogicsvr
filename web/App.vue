@@ -7,4 +7,9 @@
 .app {
     height: 200px;
 }
+.page-title {
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.7);
+    padding-bottom: 16px;
+}
 </style>

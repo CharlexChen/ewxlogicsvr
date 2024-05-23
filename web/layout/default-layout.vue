@@ -212,7 +212,7 @@ const goto = (item: RouteRecordRaw) => {
     font-weight: 400;
     font-size: 14px;
     background: var(--color-bg-3);
-    padding: 15px;
+    padding: 24px;
 }
 
 .arco-layout :deep(.arco-layout-footer),

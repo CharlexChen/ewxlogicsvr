@@ -2,9 +2,8 @@ import { DEFAULT_LAYOUT } from '../base';
 import { AppRouteRecordRaw } from '../types';
 
 const DASHBOARD: AppRouteRecordRaw = {
-  path: '/dashboard',
+  path: '/',
   name: 'Dashboard',
-  redirect: '/dashboard/workplace',
   component: DEFAULT_LAYOUT,
   meta: {
     locale: 'menu.dashboard',
