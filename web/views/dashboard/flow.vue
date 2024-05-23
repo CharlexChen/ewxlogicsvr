@@ -193,7 +193,7 @@ import { Message } from '@arco-design/web-vue';
 //引入VueOfficeExcel组件
 // import VueOfficeExcel from '@vue-office/excel'
 //引入相关样式
-import '@vue-office/excel/lib/index.css'
+// import '@vue-office/excel/lib/index.css'
 import * as XLSX from 'xlsx';
 import { ITransferData, transferData } from './flow';
 import { IconPlus, IconMinus } from '@arco-design/web-vue/es/icon';
