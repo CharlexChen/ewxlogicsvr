@@ -10,13 +10,16 @@ export interface ITransferData {
         statisticalField: string;
         expandField: string[];
         sort?: 0 | 1;
-    }
+    };
+    sortField?: string;
+    sort?: 0 | 1;
+    limit?: number;
 }
 export const transferData = (list: any[], options?: ITransferData) => {
     if (!options) {
         return list;
     }
-    const resultList = list.filter((item) => {
+    let resultList = list.filter((item) => {
         return options?.conditions?.every((ele) => {
             switch (ele.relation) {
                 case '=':
@@ -35,7 +38,12 @@ export const transferData = (list: any[], options?: ITransferData) => {
             }
         });
     });
+    if (options.sortField) {
+        const num = options?.sort ? 1 : -1;
+        resultList = resultList?.sort((itemA, itemB) => itemA[options.sortField as string] > itemB[options.sortField as string] ? num : -num) || [];
+    }
     if (!options?.polymerization.arithmeticValue || !options?.polymerization.enable) {
+        if (options?.limit) return resultList.slice(0, options?.limit);
         return resultList;
     }
     const obj: Record<string, number> = {};
@@ -53,7 +61,7 @@ export const transferData = (list: any[], options?: ITransferData) => {
         obj[arrList.join('-')] = dataHandler(options, obj[arrList.join('-')], item);
     });
     const keys = options.polymerization.expandField?.map((ele) => ele).join('-');
-    return Object.keys(obj)?.map((item) => {
+    const resList = Object.keys(obj)?.map((item) => {
         let value = obj[item];
         if (options.polymerization.arithmeticValue === 'average') {
             value = value / resultList.length;
@@ -69,6 +77,8 @@ export const transferData = (list: any[], options?: ITransferData) => {
         }
         return bool ? 1 : -1
     }) || [];
+    if (options?.limit) return resList.slice(0, options?.limit);
+    return resList;
 };
 
 const dataHandler = (options: ITransferData, num: number, item: any): number => {

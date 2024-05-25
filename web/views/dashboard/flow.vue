@@ -91,21 +91,21 @@
                     :expires="false"
                 >
                     <a-space style="flex-wrap: wrap;">
-                        <a-button @click="onFlowAdd">+数据处理</a-button>
+                        <a-button @click="onFlowTransferAdd">+数据处理</a-button>
                         <a-button @click="onDataShareAdd">+数据通知</a-button>
                         <a-button @click="onFlowPreview">数据预览</a-button>
                     </a-space>
                 </CardWrap>
             </a-col>
         </a-row>
-        <a-modal v-model:visible="dataFormVisible" title="设置指标" fullscreen @cancel="onDataFormCanCel" :on-before-ok="handleDataFormBeforeOk">
+        <a-drawer :width="500" v-model:visible="dataFormVisible" :on-before-ok="handleDataFormBeforeOk" @cancel="onDataFormCanCel" unmountOnClose>
             <a-form :model="dataForm">
                 <a-form-item v-if="!dataForm.conditions.length" label="筛选条件">
-                    <a-button @click="handleAddCondition()" :style="{marginLeft:'10px'}">添加筛选条件</a-button>
+                    <a-button @click="handleAddCondition()">添加筛选条件</a-button>
                 </a-form-item>
                 <a-form-item v-for="(item, index) of dataForm.conditions" :field="`conditions[${index}].value`" :label="`条件-${index + 1}`" >
                     <a-input-group>
-                        <a-select v-if="headerList.length" v-model="item.key" :style="{width:'320px'}" placeholder="Please select ...">
+                        <a-select v-if="headerList.length" v-model="item.key" :style="{width:'200px'}" placeholder="Please select ...">
                             <a-option v-for="ele in headerList" :value="ele">{{ele}}</a-option>
                         </a-select>
                         <a-input v-else v-model="item.key" :style="{ width:'150px' }" placeholder="字段名称" />
@@ -125,6 +125,20 @@
                     <!-- <a-button @click="handleAddCondition()" :style="{marginLeft:'10px'}">加</a-button> -->
                     <!-- <a-button v-if="dataForm.conditions.length > 1" @click="handleDeleteCondition(index)" :style="{marginLeft:'10px'}">删</a-button> -->
                 </a-form-item>
+                <a-form-item label="排序字段">
+                    <a-input v-model="dataForm.sortField" :style="{width:'200px'}" placeholder="默认按原顺序" class="input-demo" />
+                    <a-switch v-if="dataForm.sortField" v-model="dataForm.sort">
+                        <template #checked>
+                            升序
+                        </template>
+                        <template #unchecked>
+                            降序
+                        </template>
+                    </a-switch>
+                </a-form-item>
+                <a-form-item label="限制条数">
+                    <a-input-number v-model="dataForm.limit" :style="{width:'200px'}" placeholder="默认0，无限制" class="input-demo" :min="0" />
+                </a-form-item>
                 <a-form-item label="聚合分析">
                     <a-switch v-model="dataForm.polymerization.enable" @change="onPolymerizationSwitch"></a-switch>
                 </a-form-item>
@@ -138,7 +152,7 @@
                 </a-form-item>
                 <a-form-item v-if="dataForm.polymerization.enable" label="展开字段">
                     <!-- :default-value="['test']" -->
-                    <a-input-tag v-model="dataForm.polymerization.expandField" :style="{width:'320px'}" placeholder="请输入展开字段，输入并回车即生成一个字段标签" allow-clear/>
+                    <a-input-tag v-model="dataForm.polymerization.expandField" :style="{width:'200'}" placeholder="请输入展开字段，输入并回车即生成一个字段标签" allow-clear/>
                 </a-form-item>
                 <a-form-item v-if="dataForm.polymerization.enable" label="聚合结果排序">
                     <a-switch v-model="dataForm.polymerization.sort">
@@ -151,39 +165,51 @@
                     </a-switch>
                 </a-form-item>
             </a-form>
-        </a-modal>
-        <a-modal v-model:visible="noticeFormVisible" title="设置通知" fullscreen @cancel="resetNoticeForm" :on-before-ok="handleNoticeFormBeforeOk">
-            <a-form :model="noticeForm">
-                <a-form-item label="webhook">
-                    <a-input v-model="noticeForm.webhook" :style="{width:'320px'}" placeholder="请输入webhook" allow-clear/>
-                </a-form-item>
-                <a-form-item label="method">
-                    <a-select v-model="noticeForm.method" :style="{width:'160px'}" placeholder="Select" :trigger-props="{ autoFitPopupMinWidth: true }">
-                        <a-option v-for="item in methodList" :value="item">{{ item }}</a-option>
-                    </a-select>
-                </a-form-item>
-                <a-form-item label="query">
-                    <a-input v-model="noticeForm.query" :style="{width:'320px'}" placeholder="请输入query" allow-clear/>
-                </a-form-item>
-                <a-form-item label="body">
-                    <a-input v-model="noticeForm.body" :style="{width:'320px'}" placeholder="请输入body" allow-clear/>
-                </a-form-item>
-            </a-form>
-        </a-modal>
+        </a-drawer>
+        <a-drawer :width="400" v-model:visible="noticeFormVisible" :on-before-ok="handleNoticeFormBeforeOk" @cancel="resetNoticeForm" unmountOnClose>
+            <template #title>
+                设置通知
+            </template>
+            <div>
+                <a-form :model="noticeForm">
+                    <a-form-item label="类型">
+                        <a-select v-model="noticeForm.type" :style="{width:'160px'}" placeholder="类型选择" :trigger-props="{ autoFitPopupMinWidth: true }">
+                            <a-option v-for="item in typeList" :value="item.value">{{ item.name }}</a-option>
+                        </a-select>
+                    </a-form-item>
+                    <a-form-item label="通知标题文案">
+                        <a-textarea v-model="noticeForm.ewxOptions.title" :style="{width:'320px'}" placeholder="推送标题文案" allow-clear/>
+                    </a-form-item>
+                    <a-form-item label="每行模版字符串">
+                        <a-textarea v-model="noticeForm.ewxOptions.rowTemplate" :style="{width:'320px'}" placeholder="自定义每行模版字符串" allow-clear/>
+                    </a-form-item>
+                    <a-form-item label="webhook">
+                        <a-input v-model="noticeForm.webhook" :style="{width:'320px'}" placeholder="请输入webhook" allow-clear/>
+                    </a-form-item>
+                    <a-form-item label="method">
+                        <a-select v-model="noticeForm.method" :disabled="true" :style="{width:'160px'}" placeholder="Select" :trigger-props="{ autoFitPopupMinWidth: true }">
+                            <a-option v-for="item in methodList" :value="item">{{ item }}</a-option>
+                        </a-select>
+                    </a-form-item>
+                    <a-form-item v-if="noticeForm.method === 'GET'" label="query">
+                        <a-textarea v-model="noticeForm.query" :style="{width:'320px'}" placeholder="请输入query" allow-clear />
+                    </a-form-item>
+                    <a-form-item v-if="noticeForm.method === 'POST'" label="body">
+                        <a-textarea v-model="noticeForm.body" :style="{width:'320px'}" placeholder="请输入body" allow-clear />
+                    </a-form-item>
+                    <a-form-item label="数据预览">
+                        <a-button @click="onNoticePreview">填入预览数据</a-button>
+                    </a-form-item>
+                </a-form>
+            </div>
+        </a-drawer>
+
         <a-modal v-model:visible="previewVisible" title="预览" fullscreen>
             <a-table :columns="columns" :data="previewData" />
         </a-modal>
-        <a-modal v-model:visible="resultPreviewVisible" title="结果预览" fullscreen>
+        <a-modal v-model:visible="resultPreviewVisible" title="结果预览">
             <a-table :columns="resultColumn" :data="resultData" />
         </a-modal>
-        <!-- <a-modal v-model:visible="previewVisible" title="预览" fullscreen>
-            <vue-office-excel
-                :src="excel"
-                style="height: 100vh;"
-                @rendered="renderedHandler"
-                @error="errorHandler"
-            />
-        </a-modal> -->
     </div>
 </template>
 <script setup lang="ts">
@@ -194,9 +220,25 @@ import { Message } from '@arco-design/web-vue';
 // import VueOfficeExcel from '@vue-office/excel'
 //引入相关样式
 // import '@vue-office/excel/lib/index.css'
-import * as XLSX from 'xlsx';
-import { ITransferData, transferData } from './flow';
+import { ITransferData, transferData } from '../../hooks/flow';
 import { IconPlus, IconMinus } from '@arco-design/web-vue/es/icon';
+import { useFlow } from '@/hooks/useFlow';
+import { fileToBlob } from '@/utils/file';
+import { template as transferTpl } from 'radash'
+
+
+const {
+    currentFlowIndex,
+    flowList,
+    previewData,
+    resultPreviewVisible,
+    resultColumn,
+    resultData,
+    onFlowTransferAdd,
+    onFlowPreview,
+    onDataShareAdd,
+    onFlowDel,
+} = useFlow();
 
 // 预览数据
 const previewVisible = ref(false);
@@ -218,93 +260,14 @@ const columns = ref([
         dataIndex: 'email',
     },
 ]);
-const previewData = ref([]);
 
-const resultPreviewVisible = ref(false);
-const resultColumn = ref<Array<{
-    dataIndex: string;
-    title: string;
-}>>([]);
-const resultData = ref<any[]>([]);
-function onFlowAdd() {
-    flowList.value.push({
-        type: 'transfer',
-        transferData: undefined,
-    });
-}
 
-let finalData: any[] = [];
-function onFlowPreview() {
-    // console.log('>>>预览数据', transferData(previewData.value, flowList.value[1].transferData));
-    finalData = previewData.value.slice();
-    flowList.value?.forEach((item) => {
-        if (item.type === 'transfer') {
-            finalData = transferData(finalData, item.transferData);
-        }
-    });
-    if (finalData && finalData?.length) {
-        resultColumn.value = Object.keys(finalData[0]).map((ele) => ({
-            dataIndex: ele,
-            title: ele,
-        }))
-        resultData.value = finalData;
-        console.log('>>>preview data', finalData);
-        resultPreviewVisible.value = true;
-    }
-}
-function onDataShareAdd() {
-    console.log('>>>推送数据，企业微信群聊、其他系统');
-    flowList.value.push({
-        type: 'notice',
-        noticeData: undefined,
-    });
-}
-function onFlowDel(index: number) {
-    flowList.value.splice(index, 1);
-}
-interface IFlowItem {
-    type: 'import' | 'transfer' | 'extract' | 'notice',
-    files?: Array<any>;
-    transferData?: ITransferData;
-    noticeData?: any;
-}
-const currentFlowIndex = ref(0);
-const flowList = ref<Array<IFlowItem>>([
-    {
-        type: 'import',
-        files: [],
-    },
-    {
-        type: 'transfer',
-        transferData: undefined,
-    },
-]);
 const tagText = ref('已导入');
 const openTxt = ref('确认导入');
 const closeTxt = ref('取消');
 
 const uploadRef = ref();
 const fileListRaw = ref([]);
-function fileToBlob(file: Blob) {  
-    return new Promise((resolve, reject) => {  
-        const reader = new FileReader();  
-        reader.onload = function(event: any) {
-            // 这里我们实际上创建了一个新的Blob对象，它包含与原始File对象相同的数据  
-            // 但这通常是不必要的，因为你可以直接使用File对象作为Blob  
-            // resolve(new Blob([new Uint8Array(event.target.result)], { type: file.type }));
-            const data = new Uint8Array(event.target.result);  
-            const workbook = XLSX.read(data, { type: 'array' });  
-            // 获取第一个工作表（Sheet）  
-            const worksheetName = workbook.SheetNames[0];  
-            const worksheet = workbook.Sheets[worksheetName];  
-            // 将工作表转换为 JSON 对象数组  
-            const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 }); // 假设第一行是标题行  
-            resolve(jsonData); // 输出 JSON 数据  
-        };
-        reader.onerror = reject;  
-        reader.readAsArrayBuffer(file);  
-    });  
-}  
 const headerList = ref([]);
 function onFileSelectChange(fileList: any) {
     const fileInfo = fileList[0].file;
@@ -346,8 +309,12 @@ const dataForm = ref<ITransferData>({
         statisticalField: '',
         expandField: [],
         sort: 0,
-    }
+    },
+    limit: 0,
+    sort: 0,
+    sortField: '',
 });
+
 // ---聚合能力---
 // const openPolymerization = ref(false);
 const arithmeticList = ref([
@@ -404,7 +371,10 @@ function resetDataForm() {
             statisticalField: '',
             expandField: [],
             sort: 0,
-        }
+        },
+        limit: 0,
+        sort: 0,
+        sortField: '',
     };
 }
 function onDataFormCanCel() {
@@ -426,6 +396,11 @@ async function handleDataFormBeforeOk() {
 
 // 设置数据通知能力
 interface INoticeForm {
+    type: string;
+    ewxOptions: {
+        title: string;
+        rowTemplate: string;
+    };
     webhook: string;
     method: string;
     headers: string;
@@ -434,13 +409,24 @@ interface INoticeForm {
 }
 const noticeFormVisible = ref(false);
 const noticeForm = ref<INoticeForm>({
+    type: 'ewx',
+    ewxOptions: {
+        title: '',
+        rowTemplate: '',
+    },
     webhook: '',
-    method: 'GET',
+    method: 'POST',
     headers: '',
     query: '',
     body: '',
 });
 const methodList = ref(['GET', 'POST']);
+const typeList = ref([
+    {
+        name: '企业微信',
+        value: 'ewx',
+    }
+]);
 function onNoticeBtnClick(index: number) {
     currentFlowIndex.value = index;
     noticeFormVisible.value = true;
@@ -450,8 +436,13 @@ function onNoticeBtnClick(index: number) {
 }
 function resetNoticeForm() {
     noticeForm.value = {
+        type: 'ewx',
+        ewxOptions: {
+            title: '',
+            rowTemplate: '',
+        },
         webhook: '',
-        method: 'GET',
+        method: 'POST',
         headers: '',
         query: '',
         body: '',
@@ -468,7 +459,44 @@ async function handleNoticeFormBeforeOk() {
     resetNoticeForm();
     return true;
 };
-
+function onNoticePreview(idx: number) {
+    let finalData: any[] = [];
+    finalData = previewData.value.slice();
+    flowList.value?.some((item, index) => {
+        if (idx === index) return true;
+        if (item.type === 'transfer') {
+            finalData = transferData(finalData, item.transferData);
+        }
+        return false;
+    });
+    if (finalData && finalData?.length) {
+        resultColumn.value = Object.keys(finalData[0]).map((ele) => ({
+            dataIndex: ele,
+            title: ele,
+        }))
+        resultData.value = finalData;
+        console.log('>>>preview data', finalData);
+        resultPreviewVisible.value = true;
+    }
+    const rows = finalData?.map((item, index) => {
+        const rowTpl = noticeForm.value.ewxOptions.rowTemplate;
+        const html = transferTpl(rowTpl, { ...item, number: index + 1 }) // => It is blue
+        return html;
+    }) || [];
+    const contentStr = rows.join('\n');
+    noticeForm.value.body = JSON.stringify({
+        "msgtype": "markdown",
+        "markdown": {
+            "content": `${noticeForm.value.ewxOptions.title}\n${contentStr}`
+        }
+    });
+    console.log('html', {
+        "msgtype": "markdown",
+        "markdown": {
+            "content": `${noticeForm.value.ewxOptions.title}\n${contentStr}`
+        }
+    });
+}
 
 // const excel = ref('');
 // function renderedHandler() {
