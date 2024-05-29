@@ -1,0 +1,166 @@
+schema: tb
+pipeline:
+  - name: 构建
+    stages:
+      - driven: AUTO
+        jobs:
+          - displayName: Node.js 镜像构建
+            task: execution-component-production@20
+            identifier: '17_1714204862668'
+            templateType: task
+            templateSign: ''
+            templateBatchUpdate: 'N'
+            extraInfo: ''
+            params:
+              steps:
+                - name: Node.js 构建
+                  stepType: node_build
+                  stepIdentifier: '17_1714204862668__18_1714204862669'
+                  VERSION_TYPE: PREDEFINED
+                  CI_RUNTIME_VERSION: '18.12'
+                  command: >
+                    # input your command here
+
+                    pnpm install --registry=http://registry.npm.taobao.org &&
+                    pnpm build
+                  USE_NPM_CACHE: true
+                  freeInTaskGroupModeFields: []
+                  invalidStepVersion: false
+                - name: 镜像构建并推送至自定义镜像仓库
+                  stepType: custom_docker_build
+                  stepIdentifier: '17_1714204862668__10_1714205054849'
+                  freeInTaskGroupModeFields:
+                    - ARGS
+                  artifact: artifact
+                  DOCKER_DESTINATION: ccr.ccs.tencentyun.com/dgut/yt-images
+                  authType: usernamepassword
+                  SERVICE_CONNECTION_ID: ''
+                  DOCKER_USER: '100021630207'
+                  DOCKER_PASSWORD: Ab123456
+                  BUILDKIT_VERSION: v0.11.6
+                  DOCKER_FILE_PATH: Dockerfile
+                  CONTEXT_PATH: ''
+                  NO_CACHE: false
+                  ARGS: '{}'
+                  JSONEncoding: true
+                  invalidStepVersion: false
+              ENGINE_PIPELINE_NAME: '${INPUTS.ENGINE_PIPELINE_NAME}'
+              ENGINE_PIPELINE_ID: '${INPUTS.ENGINE_PIPELINE_ID}'
+              ENGINE_PIPELINE_INST_ID: '${INPUTS.ENGINE_PIPELINE_INST_ID}'
+              ENGINE_PIPELINE_INST_NUMBER: '${INPUTS.ENGINE_PIPELINE_INST_NUMBER}'
+              buildNodeGroup: K8S-4
+              capabilities: 'Linux,amd64'
+              buildEnvironment: container
+              specifyContainerImageId: >-
+                build-steps-public-registry.cn-beijing.cr.aliyuncs.com/build-steps/alinux3:ffdb23fd-2024-02-26-17-42-35
+              clone_option: all
+              selected_sources: ''
+            plugins:
+              - name: 邮件通知插件
+                sign: TeambitionProductionEmailPlugin
+                identifier: 17_1714204862668___plugin-10_1714229294000
+                params:
+                  address: 857300455@qq.com
+                  positions:
+                    - FAIL
+                    - SUCCESS
+            output:
+              - name: >-
+                  17_1714204862668__10_1714205054849.dynamic_output.ccr.ccs.tencentyun.com/dgut/yt-images
+                displayName: 镜像仓库地址.ccr.ccs.tencentyun.com/dgut/yt-images
+                type: artifact
+                identifier: 17_1714204862668__10_1714205054849__DOCKER_DESTINATION
+                description: 自定义镜像仓库地址
+                export: true
+                ref: steps
+            freeInTaskGroupModeFields: []
+      - driven: AUTO
+        jobs:
+          - displayName: JavaScript 代码扫描
+            task: execution-component-production@20
+            identifier: '10_1716696380429'
+            templateType: task
+            templateSign: ''
+            templateBatchUpdate: 'N'
+            extraInfo: ''
+            params:
+              steps:
+                - name: JavaScript 代码扫描
+                  stepType: js_code_scan
+                  stepIdentifier: '10_1716696380429__11_1716696380430'
+                  USE_LOCAL_RULES: false
+                  CI_RUNTIME_VERSION: '18.12'
+                  USE_LOCAL_DEPENDENCIES: '*'
+                  INCREASE: false
+                  EXCLUSION: |
+                    test/
+                    build/
+                    node_modules/
+                    vendor/
+                    dist/
+                    **/*.min.js
+                    **/*-min.js
+                    **/*.bundle.js
+                  CHECK_REDLINES: ''
+                  freeInTaskGroupModeFields: []
+                  invalidStepVersion: false
+              ENGINE_PIPELINE_NAME: '${INPUTS.ENGINE_PIPELINE_NAME}'
+              ENGINE_PIPELINE_ID: '${INPUTS.ENGINE_PIPELINE_ID}'
+              ENGINE_PIPELINE_INST_ID: '${INPUTS.ENGINE_PIPELINE_INST_ID}'
+              ENGINE_PIPELINE_INST_NUMBER: '${INPUTS.ENGINE_PIPELINE_INST_NUMBER}'
+              buildNodeGroup: K8S-4
+              capabilities: 'Linux,amd64'
+              buildEnvironment: container
+              specifyContainerImageId: >-
+                build-steps-public-registry.cn-beijing.cr.aliyuncs.com/build-steps/alinux3:ffdb23fd-2024-02-26-17-42-35
+              clone_option: all
+              selected_sources: ''
+            plugins: []
+            output: []
+            freeInTaskGroupModeFields: []
+  - name: 代码扫描
+    stages:
+      - driven: AUTO
+        jobs:
+          - displayName: JavaScript 代码扫描
+            task: execution-component-production@20
+            identifier: '10_1716696529445'
+            templateType: task
+            templateSign: ''
+            templateBatchUpdate: 'N'
+            extraInfo: ''
+            params:
+              steps:
+                - name: JavaScript 代码扫描
+                  stepType: js_code_scan
+                  stepIdentifier: '10_1716696529445__11_1716696529446'
+                  USE_LOCAL_RULES: false
+                  CI_RUNTIME_VERSION: '18.12'
+                  USE_LOCAL_DEPENDENCIES: '*'
+                  INCREASE: false
+                  EXCLUSION: |
+                    test/
+                    build/
+                    node_modules/
+                    vendor/
+                    dist/
+                    **/*.min.js
+                    **/*-min.js
+                    **/*.bundle.js
+                  CHECK_REDLINES: ''
+                  freeInTaskGroupModeFields: []
+                  invalidStepVersion: false
+              ENGINE_PIPELINE_NAME: '${INPUTS.ENGINE_PIPELINE_NAME}'
+              ENGINE_PIPELINE_ID: '${INPUTS.ENGINE_PIPELINE_ID}'
+              ENGINE_PIPELINE_INST_ID: '${INPUTS.ENGINE_PIPELINE_INST_ID}'
+              ENGINE_PIPELINE_INST_NUMBER: '${INPUTS.ENGINE_PIPELINE_INST_NUMBER}'
+              buildNodeGroup: K8S-4
+              capabilities: 'Linux,amd64'
+              buildEnvironment: container
+              specifyContainerImageId: >-
+                build-steps-public-registry.cn-beijing.cr.aliyuncs.com/build-steps/alinux3:ffdb23fd-2024-02-26-17-42-35
+              clone_option: all
+              selected_sources: ''
+            plugins: []
+            output: []
+            freeInTaskGroupModeFields: []
