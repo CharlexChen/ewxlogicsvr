@@ -23,6 +23,16 @@ const DASHBOARD: AppRouteRecordRaw = {
       },
     },
     {
+      path: '/flowList',
+      name: 'DashboardFlowList',
+      component: () => import('@/views/dashboard/flowList.vue'),
+      meta: {
+        locale: 'menu.dashboard.flow',
+        requiresAuth: true,
+        roles: ['*'],
+      },
+    },
+    {
       path: '/flow',
       name: 'DashboardFlow',
       component: () => import('@/views/dashboard/flow.vue'),
@@ -30,6 +40,7 @@ const DASHBOARD: AppRouteRecordRaw = {
         locale: 'menu.dashboard.flow',
         requiresAuth: true,
         roles: ['*'],
+        hideInMenu: true,
       },
     },
   ],

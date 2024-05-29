@@ -31,7 +31,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response) => {
     // 对响应数据做点什么，例如处理特定的状态码
-    if (response.status === 200) {
+    if (response.status >= 200 && response.status < 300) {
       return response.data;
     } else {
       // 处理其他状态码，例如显示错误消息

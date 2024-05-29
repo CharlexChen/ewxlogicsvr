@@ -37,7 +37,7 @@ export const transferData = (list: any[], options?: ITransferData) => {
                     return true;
             }
         });
-    });
+    }) || [];
     if (options.sortField) {
         const num = options?.sort ? 1 : -1;
         resultList = resultList?.sort((itemA, itemB) => itemA[options.sortField as string] > itemB[options.sortField as string] ? num : -num) || [];

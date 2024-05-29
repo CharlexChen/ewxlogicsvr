@@ -156,10 +156,11 @@
   
   <style scoped lang="less">
     .card-wrap {
-      height: 100%;
+      // height: 100%;
       transition: all 0.3s;
       border: 1px solid var(--color-neutral-3);
       border-radius: 4px;
+      flex-shrink: 0;
       &:hover {
         transform: translateY(-4px);
         // box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
