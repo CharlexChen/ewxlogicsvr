@@ -13,7 +13,7 @@ watcher.on('ready', () => {
   });
   exec('pnpm run build:web', (error, stdout, stderr) => {
     if (error) {
-      console.error(`exec error: ${error}`);
+      console.error(`exec error: ${stdout}`);
       return;
     }
     console.log('[build:web] done', stdout, stderr);
