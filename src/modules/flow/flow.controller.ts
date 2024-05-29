@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Inject, Post, Query } from '@nestjs/common';
 import { FlowService } from './flow.service';
-import { IPipeDelBody, IPipeQuery, IPipeSaveBody } from '../../api-typings/Flow';
+import { IPipeDelBody, IPipeQuery, IPipeSaveBody } from '../../api-typings/flow';
 
 @Controller('flow')
 export class FlowController {
