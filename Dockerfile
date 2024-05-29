@@ -10,7 +10,6 @@ COPY pnpm-lock.yaml ./
 COPY ./dist ./dist
 COPY ./build ./build
 COPY .env* ./
-COPY .env ./
 COPY ./prisma ./prisma
 # RUN pwd && ls -a
 # RUN npm install -g pnpm
