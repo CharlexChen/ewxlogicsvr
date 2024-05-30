@@ -72,7 +72,7 @@
                             >
                                 <div style="margin-top: 16px;">
                                     <a-button style="margin-right: 4px;" type="primary" @click="onDataFormBtnClick(index, stageIndex, jobIndex)">设置条件</a-button>
-                                    <a-button style="margin-right: 4px;" type="warning" @click="onPreviewClick(index, stageIndex, jobIndex)">预览数据</a-button>
+                                    <a-button style="margin-right: 4px;" type="primary" status="success" @click="onPreviewClick(index, stageIndex, jobIndex)">预览数据</a-button>
                                     <a-button @click="onFlowDel(index, stageIndex, jobIndex)">删除</a-button>
                                 </div>
                             </CardWrap>
@@ -287,17 +287,16 @@ import { IconPlus, IconMinus } from '@arco-design/web-vue/es/icon';
 import { IPluginForm, useFlow } from '@/hooks/useFlow';
 import { fileToBlob } from '@/utils/file';
 import { template as transferTpl } from 'radash'
-import { getFlow, saveFlow } from '@/api/flow';
+import { getFlow, saveFlow, sendPluginRequest } from '@/api/flow';
 import { useRoute } from 'vue-router';
 import YAML from 'yaml';
-import axios from 'axios';
 const route = useRoute();
 
 onMounted(() => {
     fetchData();
 });
 function fetchData() {
-    getFlow(Number(route.query.pipeId)).then((resp) => {
+    getFlow(Number(route.query.flowId)).then((resp) => {
         if (resp.code === 0 && resp.data[0]?.flow) {
             flowList.value = YAML.parse(resp.data[0].flow);
         }
@@ -556,15 +555,22 @@ const pluginsContentList = ref<Array<{
 function pluginRequest(index: number) {
     const pluginParams = pluginsContentList.value[index];
     if (pluginParams.webhook) {
-        if (pluginParams.method === 'GET') {
-            axios.get(pluginParams.webhook, { params: pluginParams.query }).then((_resp) => {
-                Message.info('发送成功');
-            });;
-        } else {
-            axios.post(pluginParams.webhook, pluginParams.body).then((_resp) => {
-                Message.info('发送成功');
-            });
-        }
+        // if (pluginParams.method === 'GET') {
+        //     axios.get(pluginParams.webhook, { params: pluginParams.query }).then((_resp) => {
+        //         Message.info('发送成功');
+        //     });;
+        // } else {
+        //     axios.post(pluginParams.webhook, pluginParams.body).then((_resp) => {
+        //         Message.info('发送成功');
+        //     });
+        // }
+        sendPluginRequest({
+            webhook: pluginParams.webhook,
+            method: pluginParams.method,
+            data: pluginParams.method === 'GET' ? pluginParams.query : pluginParams.body,
+        }).then((_resp) => {
+            Message.info('发送成功');
+        });
         Message.info('发送中...');
     } else {
         Message.error('webhook不可为空');
@@ -618,6 +624,8 @@ function onPreviewClick(idx: number, stageIndex: number, jobIndex: number) {
         });
         resultData.value = finalData;
         resultPreviewVisible.value = true;
+    } else {
+        Message.warning('无预览数据或未设置数据源');
     }
     // console.log('html', {
     //     "msgtype": "markdown",

@@ -14,3 +14,9 @@ export interface SaveFlowReq {
     flow: string;
 }
 export const saveFlow = (data: SaveFlowReq) => api.post<null, HttpResponse<unknown>>('/flow/save', data);
+export interface PluginRequestReq {
+    webhook: string;
+    method: string;
+    data: string;
+}
+export const sendPluginRequest = (data: PluginRequestReq) => api.post<null, HttpResponse<unknown>>('/common/pluginRequest', data);
