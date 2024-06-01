@@ -11,7 +11,10 @@
     </a-result>
     <div v-else class="container">
         <div class="page-title">
-            工作流设计
+            <a-button @click="router.push('/flowList')">
+                <icon-left />
+            </a-button>
+            <span class="title">工作流设计</span>
             <a-button @click="saveFlowInfo">保存</a-button>
         </div>
         <a-row class="list-row" :gutter="24">
@@ -293,7 +296,7 @@ import { onMounted, ref } from 'vue';
 import CardWrap from './components/card-wrap.vue';
 import { Message } from '@arco-design/web-vue';
 import { ITransferData, transferData } from '../../hooks/flow';
-import { IconPlus, IconMinus } from '@arco-design/web-vue/es/icon';
+import { IconPlus, IconMinus, IconLeft } from '@arco-design/web-vue/es/icon';
 import { IPluginForm, useFlow } from '@/hooks/useFlow';
 import { fileToBlob } from '@/utils/file';
 import { template as transferTpl } from 'radash'
@@ -675,6 +678,13 @@ function saveFlowInfo() {
 </script>
 <style lang="less">
 .container {
+    .page-title {
+        display: flex;
+        align-items: center;
+    }
+    .title {
+        margin: 0px 8px;
+    }
     :deep(.arco-list-content) {
         overflow-x: hidden;
     }

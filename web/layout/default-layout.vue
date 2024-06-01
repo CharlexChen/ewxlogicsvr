@@ -1,9 +1,16 @@
 <template>
     <a-layout class="arco-layout">
-        <a-layout-sider collapsible breakpoint="xl">
+        <a-layout-sider
+            collapsible
+            breakpoint="xl"
+            :collapsed="collapsed"
+            @collapse="onCollapse"
+        >
             <!-- <div class="logo" /> -->
             <div class="menu-title">
-                业务数据工具箱
+                <!-- 业务数据工具箱 -->
+                <img src="/favicon.ico" style="width: 20px; height: 20px;" alt="" srcset="">
+                <span style="margin-left: 8px; color: rgba(0,0,0,0.5); font-weight: 500;" v-if="!collapsed">数字工具箱</span>
             </div>
             <!-- @menu-item-click="onClickMenuItem" -->
             <a-menu :selected-keys="selectedKey" :auto-open-selected="true" style="height: 100%;width:100%;">
@@ -69,7 +76,7 @@
         </a-layout-sider>
         <a-layout>
             <a-layout-header style="padding-left: 20px;">
-                Header
+                <!-- Header -->
             </a-layout-header>
             <a-layout style="padding: 24px 24px 0 24px;">
                 <!-- <a-breadcrumb :style="{ margin: '16px 0' }">
@@ -80,7 +87,9 @@
                 <a-layout-content>
                     <PageLayout />
                 </a-layout-content>
-                <a-layout-footer>Footer</a-layout-footer>
+                <a-layout-footer>
+                    <!-- Footer -->
+                </a-layout-footer>
             </a-layout>
         </a-layout>
     </a-layout>
@@ -100,7 +109,10 @@ import { useI18n } from 'vue-i18n';
 import { openWindow, regexUrl } from '@/utils/tool';
 import { ref } from 'vue';
 import { listenerRouteChange } from '@/utils/route-listener';
-
+const collapsed = ref(false);
+function onCollapse() {
+    collapsed.value = !collapsed.value;
+}
 const router = useRouter();
 const { t } = useI18n();
 const {

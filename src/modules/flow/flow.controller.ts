@@ -9,7 +9,7 @@ export class FlowController {
     @Inject(FlowService) flowService: FlowService;
     @Get('/')
     async getPipe(@Query() query: IPipeQuery) {
-        if (!isNumberStr(query.flowId)) {
+        if (query.flowId && !isNumberStr(query.flowId)) {
             return {
                 code: -1,
                 msg: 'param error',
