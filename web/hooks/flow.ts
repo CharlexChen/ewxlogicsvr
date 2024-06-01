@@ -47,6 +47,7 @@ export const transferData = (list: any[], options?: ITransferData) => {
         return resultList;
     }
     const obj: Record<string, number> = {};
+    const objCount: Record<string, number> = {};
     // options.polymerization.expandField?.forEach((ele) => {
     // });
     // const polyStr = options.polymerization.expandField?.join('-');
@@ -57,14 +58,23 @@ export const transferData = (list: any[], options?: ITransferData) => {
         });
         if (!obj[arrList.join('-')]) {
             obj[arrList.join('-')] = 0;
+            objCount[arrList.join('-')] = 0;
+            if (options.polymerization.arithmeticValue === 'min') {
+                obj[arrList.join('-')] = Number.MAX_SAFE_INTEGER;
+            }
+            if (options.polymerization.arithmeticValue === 'max') {
+                obj[arrList.join('-')] = Number.MIN_SAFE_INTEGER;
+            }
         }
         obj[arrList.join('-')] = dataHandler(options, obj[arrList.join('-')], item);
+        objCount[arrList.join('-')] += 1;
     });
     const keys = options.polymerization.expandField?.map((ele) => ele).join('-');
     const resList = Object.keys(obj)?.map((item) => {
         let value = obj[item];
+        const count = objCount[item];
         if (options.polymerization.arithmeticValue === 'average') {
-            value = value / resultList.length;
+            value = value / count;
         }
         return {
             [keys]: item,
