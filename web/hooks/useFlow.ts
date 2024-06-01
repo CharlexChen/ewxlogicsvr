@@ -189,6 +189,41 @@ export function useFlow() {
             plugins: [],
         });
     }
+    function resetFlowList() {
+        flowList.value = [
+            {
+                stageName: '数据源',
+                stageType: 'import',
+                imports: [
+                    {
+                        files: [],
+                    }
+                ],
+                stages: [],
+            },
+            {
+                stageName: '数据转换',
+                stageType: 'custom',
+                stages: [
+                    {
+                        driven: 'AUTO',
+                        jobs: [
+                            {
+                                displayName: '数据转换逻辑',
+                                type: 'transfer',
+                                params: {
+                                    type: 'transfer',
+                                    transferData: undefined,
+                                },
+                                plugins: [],
+                            }
+                        ],
+                    },
+                ],
+                imports: [],
+            },
+        ];
+    }
     return {
         current,
         flowList,
@@ -203,5 +238,6 @@ export function useFlow() {
         onFlowDel,
         saveFlow,
         onFlowJobAdd,
+        resetFlowList,
     }
 }

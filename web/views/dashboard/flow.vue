@@ -1,5 +1,15 @@
 <template>
-    <div class="container">
+    <a-result v-if="showError" status="warning" title="请求异常">
+        <template #subtitle>
+            暂无法加载数据
+        </template>
+        <template #extra>
+        <a-space>
+            <a-button type='primary' @click="router.back()">返回</a-button>
+        </a-space>
+        </template>
+    </a-result>
+    <div v-else class="container">
         <div class="page-title">
             工作流设计
             <a-button @click="saveFlowInfo">保存</a-button>
@@ -288,17 +298,26 @@ import { IPluginForm, useFlow } from '@/hooks/useFlow';
 import { fileToBlob } from '@/utils/file';
 import { template as transferTpl } from 'radash'
 import { getFlow, saveFlow, sendPluginRequest } from '@/api/flow';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import YAML from 'yaml';
 const route = useRoute();
-
+const router = useRouter();
+const showError = ref(false);
 onMounted(() => {
     fetchData();
 });
 function fetchData() {
     getFlow(Number(route.query.flowId)).then((resp) => {
-        if (resp.code === 0 && resp.data[0]?.flow) {
-            flowList.value = YAML.parse(resp.data[0].flow);
+        if (resp.code === 0 && resp.data[0]?.id) {
+            if (resp.data[0]?.flow) {
+                flowList.value = YAML.parse(resp.data[0].flow);
+            } else {
+                resetFlowList();
+            }
+            showError.value = false;
+        } else {
+            Message.error('拉取流水线数据失败');
+            showError.value = true;
         }
     });
 }
@@ -314,6 +333,7 @@ const {
     onFlowStageAdd,
     onFlowDel,
     onFlowJobAdd,
+    resetFlowList,
 } = useFlow();
 
 // 预览数据
