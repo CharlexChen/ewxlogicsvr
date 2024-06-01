@@ -617,7 +617,7 @@ function onPreviewClick(idx: number, stageIndex: number, jobIndex: number) {
             title: ele,
         }))
         console.log('>>>preview data', finalData);
-        const plugins = flowList.value[current.value.flowIndex].stages[current.value.stageIndex]?.jobs[current.value.jobIndex].plugins
+        const plugins = flowList.value[idx].stages[stageIndex]?.jobs[jobIndex].plugins
         pluginsContentList.value = [];
         plugins?.forEach((ele, index) => {
             if (ele.type === 'ewx') {
